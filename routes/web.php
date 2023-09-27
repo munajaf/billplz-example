@@ -1,5 +1,6 @@
 <?php
 
+use Billplz\Laravel\Billplz;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    
+    $bill = Billplz::bill()->create(
+        env('BILLPLZ_COLLECTION_ID'),
+        'munajaf@duck.com',
+        null, // this is phone number
+        'Ammar Munajaf',
+       '1000', // RM10
+        '-',
+        'Cart Payment',
+        ['redirect_url' => 'http://derp.test'] // after complete payment redirect to what site
+    );
+
+    return response()->json($bill->getContent());
 });
